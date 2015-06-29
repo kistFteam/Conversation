@@ -5,6 +5,11 @@ body {
 	margin-right: auto;
 }
 
+div#skit {
+	position: relative;
+	top: -400px;
+}
+
 textarea {
-	width: 409px;
+	width: 400px;
 }

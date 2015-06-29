@@ -8,6 +8,7 @@
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
+<img src="image/face0.png" name="face">
 <form name="text">
 <p>
 <textarea name="skit"></textarea><br>
@@ -41,13 +42,15 @@ function init() {
 	for (var i = 0; i < numConversation; i++) {
 		skitData[i] = 0;
 	}
-	conversationData = csv2Array("text.csv"); // csvファイル読み込み
+	conversationData = getConversationData("text.csv"); // csvファイル読み込み
 	
 	// テキストボックスに反映するための準備
 	skitBox = document.text.skit;
 	choice1Box = document.text.choice1;
 	choice2Box = document.text.choice2;
-	choice3Box = document.text.choice3;	// 選んだ会話をリセット
+	choice3Box = document.text.choice3;
+	
+	// 選んだ会話をリセット
 	for (var i = 0; i < numConversation; i++) {
 		skitData[i] = 0;
 	}
@@ -63,10 +66,12 @@ function init() {
 	choice1Box.value = c1;
 	choice2Box.value = c2;
 	choice3Box.value = c3;
+	
+	// 最初のキャラクターの顔画像を表示
+	document.face.src = "image/face" + conversationData[0][4] +".png";
 }
 
-/*
-// csvファイルのデータをを二次元配列に格納する関数
+// csvファイルのデータをを二次元配列に格納する関数(
 function csv2Array(filePath) { //csvファイルの相対パスor絶対パス
 	var csvData = new Array();
 	var data = new XMLHttpRequest();	
@@ -83,30 +88,18 @@ function csv2Array(filePath) { //csvファイルの相対パスor絶対パス
 	}
 	return csvData;
 }
-*/
 
-// 会話データを二次元配列に格納する関数(名前対応)
-function csv2Array(filePath) { //csvファイルの相対パスor絶対パス
-	var csvData = new Array();
-	var data = new XMLHttpRequest();	
-	data.open("GET", filePath, false); //true:非同期,false:同期
-	data.send(null);
-
-	var LF = "\n"; //改行コード
-	var lines = data.responseText.split(LF);
-	for (var i = 0; i < lines.length; i++) {
-		var cells = lines[i].split(",");
-		if( cells.length != 1 ) {
-			csvData.push(cells);
-		}
-	}
+// 格納した二次元配列を会話データに変換
+function getConversationData(filePath) { //csvファイルの相対パスor絶対パス
+	var csvData = csv2Array(filePath);
 	
+	// 会話データを読み込む
 	for (var i = 0; i < csvData.length; i++) {
 		for (var j = 0; j < csvData[i].length; j++) {
 			var skit = "";
 			for (var k = 0; k < csvData[i][j].length; k++) {
-				if (csvData[i][j].charAt(k) == "*") {
-					skit += playerName;
+				if (csvData[i][j].charAt(k) == "*") {	// データ中に*があれば
+					skit += playerName;	// プレイヤーの名前に変換
 				}
 				else {
 					skit += csvData[i][j].charAt(k);
@@ -134,6 +127,9 @@ function answer(ans) {
 		c2 = conversationData[temp][2];
 		c3 = conversationData[temp][3];
 		skitData[skitNumber] = ans;	// 選んだ答えをこれまでの会話の内容に追加
+		
+		// 顔画像を更新(conversationData[n][4]は顔画像の番号)
+		document.face.src = "image/face" + conversationData[temp][4] + ".png";
 	}
 	else {
 		// 会話終了
@@ -141,6 +137,9 @@ function answer(ans) {
 		c1 = "";
 		c2 = "会話は終了です";
 		c3 = "";
+		
+		// 顔画像を更新(次の選択肢はないが、最後の顔画像を表示する)
+		document.face.src = "image/face" + conversationData[temp][4] + ".png";
 	}
 	skitNumber++;	// 会話番号を増加
 		

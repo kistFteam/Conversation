@@ -151,6 +151,9 @@ function prolog() {
 
 // 選択肢を選んだときの処理の関数
 function answer(ans) {
+	if (prologSkitNumber < 3) {
+		return;
+	}
 	// 今までの答えから次の会話と選択肢を設定
 	var temp = 0;
 	for (var i = 0; i < skitNumber; i++) {

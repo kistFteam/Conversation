@@ -8,47 +8,48 @@
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
-<img src="image/face0.png" name="face">
+<img src="image/start.png" name="face">
 <form name="text">
 <p>
 <textarea name="skit"></textarea><br>
 <input type="text" name="choice1" onclick="answer(1)">
 <input type="text" name="choice2" onclick="answer(2)">
-<input type="text" name="choice3" onclick="answer(3)">
 </p>
 </form>
 
 <input type="button" name="reset" value="最初から" onclick="reset()">
 
 <script type="text/javascript">
-window.onload = init;
-var numChoice = 3;			// 選択肢数
+window.onload = prolog;
+var numChoice = 2;			// 選択肢数
 var numConversation = 3;	// 会話数
 var playerName = "";	// プレイヤーの名前
 // テキストボックス反映用変数
 var skitBox, choice1Box, choice2Box, choice3Box;
+// プロローグのメッセージ送りをするための変数
+var timer;
+var prologSkitNumber = 0;
 // 会話データ格納用変数(skit:会話内容、c1～c3:選択肢)
-var skit, c1, c2, c3;
+var skit = new Array(numChoice + 2);
 var conversationData;	// 会話データ(csv形式)
 // 選択した選択肢を記録する配列
 var skitData = new Array(numConversation);
 var skitNumber;			// 現在の会話の番号
 
 function init() {
-	do {
-		playerName = prompt("あなたの名前を入力してください", "name");
-	} while (playerName == "" || playerName == null);
-	skitNumber = 0;	// 会話番号を0で初期化	// 選んだ会話をリセット
+	skitNumber = 0;	// 会話番号を0で初期化
+	
+	// 選んだ会話をリセット
 	for (var i = 0; i < numConversation; i++) {
 		skitData[i] = 0;
 	}
+	
 	conversationData = getConversationData("text.csv"); // csvファイル読み込み
 	
 	// テキストボックスに反映するための準備
 	skitBox = document.text.skit;
 	choice1Box = document.text.choice1;
 	choice2Box = document.text.choice2;
-	choice3Box = document.text.choice3;
 	
 	// 選んだ会話をリセット
 	for (var i = 0; i < numConversation; i++) {
@@ -56,19 +57,17 @@ function init() {
 	}
 	
 	// 最初の会話データを読み込む
-	skit = conversationData[0][0];
-	c1 = conversationData[0][1];
-	c2 = conversationData[0][2];
-	c3 = conversationData[0][3];
+	for (var i = 0; i < numChoice + 1; i++) {
+		skit[i] = conversationData[0][i]
+	}
 	
 	// テキストボックスに内容を反映
-	skitBox.value = skit;
-	choice1Box.value = c1;
-	choice2Box.value = c2;
-	choice3Box.value = c3;
+	skitBox.value = skit[0];
+	choice1Box.value = skit[1];
+	choice2Box.value = skit[2];
 	
 	// 最初のキャラクターの顔画像を表示
-	document.face.src = "image/face" + conversationData[0][4] +".png";
+	document.face.src = "image/face" + conversationData[0][numChoice + 1] +".png";
 }
 
 // csvファイルのデータをを二次元配列に格納する関数(
@@ -110,6 +109,46 @@ function getConversationData(filePath) { //csvファイルの相対パスor絶�
 	}
 	return csvData;
 }
+
+// プロローグ用関数
+function prolog() {
+	if (prologSkitNumber == 0) {
+		document.face.src = "image/start.png";
+		
+		do {
+			playerName = prompt("あなたの名前を入力してください", "name");
+		} while (playerName == "" || playerName == null);
+
+		// テキストボックスに反映するための準備
+		skitBox = document.text.skit;
+		choice1Box = document.text.choice1;
+		choice2Box = document.text.choice2;
+	}
+	choice1Box.value = "";
+	choice2Box.value = "";
+	
+	switch (prologSkitNumber) {
+	case 0:
+		skitBox.value = "今日は天気が良かったのでペットの○○を散歩に連れ出した。";
+		break;
+	case 1:
+		skitBox.value = "○○も嬉しそうに散歩を楽しんでいるようだ。";
+		break;
+	case 2:
+		skitBox.value = "そろそろ帰ろうかと思ったそのとき…。";
+		break;
+	}
+	prologSkitNumber++;
+	
+	if (prologSkitNumber > 3) {
+		init();
+		return;
+	}
+	
+	// 2秒でメッセージを送る
+	timer = setTimeout("prolog()", 2000);
+}
+
 // 選択肢を選んだときの処理の関数
 function answer(ans) {
 	// 今までの答えから次の会話と選択肢を設定
@@ -122,32 +161,30 @@ function answer(ans) {
 	// 会話がまだ残っていれば次へ
 	if (skitNumber < numConversation - 1) {
 		// 会話データを読み込み
-		skit = conversationData[temp][0];
-		c1 = conversationData[temp][1];
-		c2 = conversationData[temp][2];
-		c3 = conversationData[temp][3];
+		for (var i = 0; i < numChoice + 1; i++) {
+			skit[i] = conversationData[temp][i];
+		}
+
 		skitData[skitNumber] = ans;	// 選んだ答えをこれまでの会話の内容に追加
 		
-		// 顔画像を更新(conversationData[n][4]は顔画像の番号)
-		document.face.src = "image/face" + conversationData[temp][4] + ".png";
+		// 顔画像を更新(conversationData[n][numChoice + 1]は顔画像の番号)
+		document.face.src = "image/face" + conversationData[temp][numChoice + 1] + ".png";
 	}
 	else {
 		// 会話終了
-		skit = conversationData[temp][0];
-		c1 = "";
-		c2 = "会話は終了です";
-		c3 = "";
+		skit[0] = conversationData[temp][0];
+		skit[1] = "会話は終了です";
+		skit[2] = "";
 		
 		// 顔画像を更新(次の選択肢はないが、最後の顔画像を表示する)
-		document.face.src = "image/face" + conversationData[temp][4] + ".png";
+		document.face.src = "image/face" + conversationData[temp][numChoice + 1] + ".png";
 	}
 	skitNumber++;	// 会話番号を増加
 		
 	// 会話データをテキストボックスに反映
-	skitBox.value = skit;
-	choice1Box.value = c1;
-	choice2Box.value = c2;
-	choice3Box.value = c3;
+	skitBox.value = skit[0];
+	choice1Box.value = skit[1];
+	choice2Box.value = skit[2]
 }
 
 // aのr乗を求める関数
@@ -160,14 +197,18 @@ function power(a, r) {
 }
 
 function reset() {
-	if (skitNumber > 0 && skitNumber < numConversation) {
-		// 会話が途中の場合、確認ダイアログの表示
-		if (window.confirm('会話の途中ですがリセットしますか？')) {
-			init();
+	if (prologSkitNumber >= 3) {
+		if (skitNumber > 0 && skitNumber < numConversation) {
+			// 会話が途中の場合、確認ダイアログの表示
+			if (window.confirm('会話の途中ですがリセットしますか？')) {
+			prologSkitNumber = 0;
+				prolog();
+			}
 		}
-	}
-	else {
-		init();
+		else {
+			prologSkitNumber = 0;
+			prolog();
+		}
 	}
 }
 </script>

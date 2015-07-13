@@ -12,13 +12,13 @@ div#skit {
 
 div {
 	position: relative;
-	width: 800px;
-	height: 600px;
+	width: 700px;
+	height: 525px;
 	margin: 0 auto;
 }
 
 div .back {
-	width: 800px;
+	width: 700px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -31,5 +31,9 @@ div .face {
 }
 
 textarea {
-	width: 400px;
+	width: 450px;
+}
+
+input.choice {
+	width: 220px;
 }

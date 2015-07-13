@@ -10,6 +10,26 @@ div#skit {
 	top: -400px;
 }
 
+div {
+	position: relative;
+	width: 800px;
+	height: 600px;
+	margin: 0 auto;
+}
+
+div .back {
+	width: 800px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+div .face {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
 textarea {
 	width: 400px;
 }

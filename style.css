@@ -5,6 +5,11 @@ body {
 	margin-right: auto;
 }
 
+div#skit {
+	position: relative;
+	top: -400px;
+}
+
 div {
 	position: relative;
 	width: 800px;
@@ -26,5 +31,5 @@ div .face {
 }
 
 textarea {
-	width: 409px;
+	width: 400px;
 }

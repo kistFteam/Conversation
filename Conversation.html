@@ -9,8 +9,6 @@
 </head>
 <body>
 
-<div id="skit">
-<img src="image/start.png" name="face">
 <div>
 <img src="image/back.jpg" class="back">
 <img src="image/face0.png" name="face" class="face">
@@ -18,13 +16,12 @@
 <form name="text">
 <p>
 <textarea name="skit"></textarea><br>
-<input type="text" name="choice1" onclick="answer(1)">
-<input type="text" name="choice2" onclick="answer(2)">
+<input type="text" name="choice1" onclick="answer(1)" class="choice">
+<input type="text" name="choice2" onclick="answer(2)" class="choice">
 </p>
 </form>
 
 <input type="button" name="reset" value="最初から" onclick="reset()">
-</div>
 
 <script type="text/javascript">
 window.onload = prolog;
@@ -136,10 +133,10 @@ function prolog() {
 	
 	switch (prologSkitNumber) {
 	case 0:
-		skitBox.value = "今日は天気が良かったのでペットの○○を散歩に連れ出した。";
+		skitBox.value = "今日は天気が良かったのでペットのペチを散歩に連れ出した。";
 		break;
 	case 1:
-		skitBox.value = "○○も嬉しそうに散歩を楽しんでいるようだ。";
+		skitBox.value = "ペチも嬉しそうに散歩を楽しんでいるようだ。";
 		break;
 	case 2:
 		skitBox.value = "そろそろ帰ろうかと思ったそのとき…。";

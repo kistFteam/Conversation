@@ -5,11 +5,6 @@ body {
 	margin-right: auto;
 }
 
-div#skit {
-	position: relative;
-	top: -400px;
-}
-
 div {
 	position: relative;
 	width: 700px;
@@ -17,14 +12,14 @@ div {
 	margin: 0 auto;
 }
 
-div .back {
+img.back {
 	width: 700px;
 	position: absolute;
 	top: 0;
 	left: 0;
 }
 
-div .face {
+img.face {
 	position: absolute;
 	bottom: 0;
 	right: 0;

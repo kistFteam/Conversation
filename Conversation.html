@@ -9,20 +9,24 @@
 </head>
 <body>
 
+<h1>オレとペットの非日常</h1>
 <div>
 <img src="image/back.jpg" class="back">
 <img src="image/face0.png" name="face" class="face">
 </div>
 <form name="text">
 <p>
-<textarea name="skit"></textarea><br>
-<input type="text" name="choice1" onclick="answer(1)" class="choice">
-<input type="text" name="choice2" onclick="answer(2)" class="choice"><br>
+<textarea name="skit"></textarea>
+<input type="button" name="choice1" onclick="answer(1)" class="choice">
+<input type="button" name="choice2" onclick="answer(2)" class="choice">
+</p>
+<p class="backlog">
+バックログ<br>
 <textarea name="backlog"></textarea>
 </p>
+<input type="button" name="reset" value="最初から" onclick="reset()">
 </form>
 
-<input type="button" name="reset" value="最初から" onclick="reset()">
 
 <script type="text/javascript">
 window.onload = prolog;

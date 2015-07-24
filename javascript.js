@@ -1,54 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<link rel="stylesheet" href="style.css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
-<title>会話プログラム</title>
-</head>
-<body>
-
-<!-- タイトル -->
-<h1>オレとペットの非日常</h1>
-
-<!-- 画面 -->
-<div>
-<img src="image/back.jpg" class="back">
-<img src="image/face0.png" name="face" class="face">
-</div>
-
-<!-- テキスト -->
-<form name="text">
-<p>
-<textarea name="skit"></textarea>
-<input type="button" name="choice1" onclick="answer(1)" class="choice">
-<input type="button" name="choice2" onclick="answer(2)" class="choice">
-</p>
-<p class="backlog">
-バックログ<br>
-<textarea name="backlog"></textarea>
-</p>
-</form>
-<input type="button" name="reset" value="最初から" onclick="reset()">
-
-
-
-
-
 <script type="text/javascript">
 window.onload = prolog;
 var numChoice = 2;			// 選択肢数
 var numConversation = 3;	// 会話数
 var playerName = "";	// プレイヤーの名前
 // テキストボックス反映用変数
-var skitBox, choice1Box, choice2Box;
+var skitBox, choice1Box, choice2Box, choice3Box;
 var backlogBox;
 // バックログの内容
 var backlogText = "";;
 // プロローグのメッセージ送りをするための変数
 var timer;
 var prologSkitNumber = 0;
-// 会話データ格納用変数(skit:会話内容、c1～c2:選択肢)
+// 会話データ格納用変数(skit:会話内容、c1～c3:選択肢)
 var skit = new Array(numChoice + 2);
 var conversationData;	// 会話データ(csv形式)
 // 選択した選択肢を記録する配列
@@ -251,9 +214,9 @@ function reset() {
 			}
 		}
 		else {
+			prologSkitNumber = 0;
+			prolog();
 		}
 	}
 }
 </script>
-</body>
-</html>

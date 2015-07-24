@@ -1,19 +1,23 @@
 body {
-	width: 900px;
+	width: 600px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
 
+h1 {
+	margin: 0;
+}
+
 div {
 	position: relative;
-	width: 700px;
-	height: 525px;
+	width: 600px;
+	height: 450px;
 	margin: 0 auto;
 }
 
 img.back {
-	width: 700px;
+	width: 600px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -26,9 +30,15 @@ img.face {
 }
 
 textarea {
-	width: 450px;
+	width: 590px;
 }
 
 input.choice {
-	width: 220px;
+	width: 295px;
+	text-align: center;
+}
+
+p {
+	margin: 2px 0 5px 0;
+	text-align: left;
 }

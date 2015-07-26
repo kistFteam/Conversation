@@ -13,23 +13,20 @@
 
 <!-- 画面 -->
 <div>
-<img src="image/back.jpg" class="back">
-<img src="image/face0.png" name="face" class="face">
+<img src="image/back.jpg" id="back">
+<img src="image/face0.png" name="face" id="face">
 </div>
 
 <!-- テキスト -->
 <form name="text">
 <p>
-<textarea name="skit"></textarea>
+<textarea name="skit" id="skit"></textarea>
+<textarea name="backlog" id="backlog"></textarea>
 <input type="button" name="choice1" onclick="answer(1)" class="choice">
 <input type="button" name="choice2" onclick="answer(2)" class="choice">
 </p>
-<p class="backlog">
-バックログ<br>
-<textarea name="backlog"></textarea>
-</p>
 </form>
-<input type="button" name="reset" value="最初から" onclick="reset()">
+<input type="button" name="reset" value="最初から" onclick="reset()" id="reset">
 
 
 
@@ -66,30 +63,26 @@ function init() {
 	// csvファイル読み込み
 	conversationData = getConversationData("text.csv");
 	
-	// 選んだ会話をリセット
-	for (var i = 0; i < numConversation; i++) {
-		skitData[i] = 0;
-	}
-	
 	// 最初の会話データを読み込む
 	for (var i = 0; i < numChoice + 1; i++) {
 		skit[i] = conversationData[0][i]
 	}
 	
 	// バックログに最初の会話を追加
-	backlogText += skit[0] + "\n";
+	backlogText += skit[0];
 	
 	// テキストボックスに内容を反映
 	skitBox.value = skit[0];
 	choice1Box.value = skit[1];
 	choice2Box.value = skit[2];
 	backlogBox.value = backlogText;
+	goBottom();
 	
 	// 最初のキャラクターの顔画像を表示
 	document.face.src = "image/face" + conversationData[0][numChoice + 1] +".png";
 }
 
-// csvファイルのデータをを二次元配列に格納する関数(
+// csvファイルのデータをを二次元配列に格納する関数
 function csv2Array(filePath) { //csvファイルの相対パスor絶対パス
 	var csvData = new Array();
 	var data = new XMLHttpRequest();	
@@ -129,7 +122,7 @@ function getConversationData(filePath) { //csvファイルの相対パスor絶�
 	return csvData;
 }
 
-// プロローグ用関数
+// プロローグ関数
 function prolog() {
 	if (prologSkitNumber == 0) {
 		document.face.src = "image/face1.png";
@@ -153,17 +146,17 @@ function prolog() {
 	switch (prologSkitNumber) {
 	case 0:
 		skitBox.value = "今日は天気が良かったのでペットのペチを散歩に連れ出した。";
-		backlogText += skitBox.value + "\n";
+		backlogText += skitBox.value;
 		backlogBox.value = backlogText;
 		break;
 	case 1:
 		skitBox.value = "ペチも嬉しそうに散歩を楽しんでいるようだ。";
-		backlogText += skitBox.value + "\n";
+		backlogText += "\n" + skitBox.value;
 		backlogBox.value = backlogText;
 		break;
 	case 2:
 		skitBox.value = "そろそろ帰ろうかと思ったそのとき…。";
-		backlogText += skitBox.value + "\n";
+		backlogText += "\n" + skitBox.value + "\n";
 		backlogBox.value = backlogText;
 		break;
 	}
@@ -193,10 +186,10 @@ function answer(ans) {
 	
 	// 会話がまだ残っていれば次へ
 	if (skitNumber < numConversation - 1) {
-		
 		// こちら対応をバックログに追加して表示
-		backlogText += playerName + "：" + skit[ans] + "\n";
+		backlogText += "\n" + playerName + "：" + skit[ans];
 		backlogBox.value = backlogText;
+		goBottom();
 	
 		// 会話データを読み込み
 		for (var i = 0; i < numChoice + 1; i++) {
@@ -210,12 +203,13 @@ function answer(ans) {
 	}
 	else {
 		// こちら対応をバックログに追加して表示
-		backlogText += playerName + "：" + skit[ans] + "\n";
+		backlogText += "\n" + playerName + "：" + skit[ans];
 		backlogBox.value = backlogText;
+		goBottom();
 		
 		// 会話終了
 		skit[0] = conversationData[temp][0];
-		skit[1] = "会話は終了です";
+		skit[1] = "";
 		skit[2] = "";
 		
 		// 顔画像を更新(次の選択肢はないが、最後の顔画像を表示する)
@@ -228,8 +222,20 @@ function answer(ans) {
 	choice1Box.value = skit[1];
 	choice2Box.value = skit[2];
 	// 次に表示される会話をバックログに追加して表示
-	backlogText += skit[0] + "\n";
+	backlogText += "\n" + skit[0];
 	backlogBox.value = backlogText;
+	if (skitNumber == numConversation) {
+		backlogText += "\n― 会話は終了です ―";
+		backlogBox.value = backlogText;
+	}
+	goBottom();
+}
+
+// バックログを最下部にスクロールする関数
+function goBottom(){
+    var obj = document.getElementById("backlog");
+    if(!obj) return;
+    obj.scrollTop = obj.scrollHeight;
 }
 
 // aのr乗を求める関数
@@ -241,17 +247,11 @@ function power(a, r) {
 	return num;
 }
 
+// リセットするか確認ダイアログを表示
 function reset() {
-	if (prologSkitNumber >= 3) {
-		if (skitNumber > 0 && skitNumber < numConversation) {
-			// 会話が途中の場合、確認ダイアログの表示
-			if (window.confirm('会話の途中ですがリセットしますか？')) {
-			prologSkitNumber = 0;
-				prolog();
-			}
-		}
-		else {
-		}
+	if (window.confirm('会話をリセットしますか？')) {
+	prologSkitNumber = 0;
+	prolog();
 	}
 }
 </script>

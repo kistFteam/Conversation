@@ -27,9 +27,10 @@
 + HTML5/CSS3(レイアウト)
 + JavaScript (プログラム)
 + Illustrator CC (画像編集)
++ Photoshop (画像編集)
 
 
 ### 参考資料 ###
 ------
-+ JavaScript http://www.hp-stylelink.com/news/2014/08/20140826.php
++ 読み込んだCSVファイルを配列に変換する方法　http://www.hp-stylelink.com/news/2014/08/20140826.php
 

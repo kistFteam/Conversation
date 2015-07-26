@@ -1,45 +1,58 @@
 body {
-	width: 600px;
+	width: 550px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-/* É^ÉCÉgÉã */
+/* „Çø„Ç§„Éà„É´ */
 h1 {
 	margin: 0 0 5px 0;
 }
 
-/* âÊñ  */
+/* ÁîªÈù¢ */
 div {
 	position: relative;
-	width: 600px;
-	height: 450px;
+	width: 550px;
+	height: 412px;
 	margin: 0 auto;
 }
 
-img.back {
-	width: 600px;
+img#back {
+	width: 550px;
 }
 
-img.face {
+img#face {
 	position: absolute;
-	bottom: -35px;
-	left: -80px;
-	width: 400px;
+	bottom: -25px;
+	left: -70px;
+	width: 350px;
 }
 
-/* ÉeÉLÉXÉg */
-textarea {
-	width: 590px;
+/* „ÉÜ„Ç≠„Çπ„Éà */
+p {
+	margin: 2px 0 5px 0;
+}
+
+textarea#skit {
+	display: none;
+}
+
+textarea#backlog {
+	font-size: 15px;
+	width: 540px;
+	height: 54px;
+}
+
+input {
+	height: 30px;
 }
 
 input.choice {
-	width: 295px;
+	width: 270px;
 	text-align: center;
 }
 
-p {
-	margin: 2px 0 5px 0;
-	text-align: left;
+input#reset {
+	width: 150px;
 }
